@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Post, UseGuards, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, HttpStatus, Header } from '@nestjs/common';
 import { LocalAuthGuard, AuthService, JwtAuthGuard, BasicAuthGuard } from './auth';
 
 @Controller()
@@ -7,6 +7,10 @@ export class AppController {
   constructor(private authService: AuthService) {}
 
   @Get([ '', 'ping' ])
+  
+  @Header("Access-Control-Allow-Origin", "*")
+  @Header("Access-Control-Request-Method", "*")
+  @Header("Access-Control-Allow-Headers", "*")
   healthCheck(): any {
     return {
       statusCode: HttpStatus.OK,
@@ -30,6 +34,9 @@ export class AppController {
 
   @UseGuards(BasicAuthGuard)
   @Get('api/profile')
+  @Header("Access-Control-Allow-Origin", "*")
+  @Header("Access-Control-Request-Method", "*")
+  @Header("Access-Control-Allow-Headers", "*")
   async getProfile(@Request() req) {
     return {
       statusCode: HttpStatus.OK,
